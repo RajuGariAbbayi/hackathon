@@ -77,10 +77,7 @@ export class UserDTO {
      * role admin & user
      */
     role: Role;
-
-    /**
-     * one to one relation
-     */
+    
     doctor:Doctor;
-
+    
 }

@@ -1,5 +1,5 @@
 import { User } from './../user dto/user.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 /**
  * doctor entity class
  */
@@ -66,6 +66,7 @@ export class Doctor{
      * one to one relation with doctor
      */
     @OneToOne(()=>User,user=>user.doctor)
+    @JoinColumn()
     user: User;
 
 }

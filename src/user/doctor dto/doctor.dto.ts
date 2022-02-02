@@ -72,6 +72,7 @@ export class DoctorDTO {
     /**
      * can't be empty will posting doctor details
      */
+    @IsNotEmpty()
     user:User;
 
 }

@@ -1,3 +1,4 @@
+import { Doctor } from './doctor dto/doctor.entity';
 import { DoctorRepository } from './doctor dto/doctor.repository';
 import { DoctorDTO } from './doctor dto/doctor.dto';
 import { UserRepository } from './user.repository';
@@ -32,7 +33,7 @@ export class UserService {
      * @param user userDTO
      * @returns user registered succesful
      */
-    async register(user: UserDTO, doctor: DoctorDTO): Promise<string> {
+    async register(user: UserDTO): Promise<string> {
         try {
             const { password } = user;
             const salt: UserDTO = await bcrypt.genSalt();
@@ -52,6 +53,29 @@ export class UserService {
             if (error.errno === 1062) {
                 throw new ConflictException('User already exists');
             }
+            throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * doctor registration
+     * @param doctorDTO doctorDTO
+     * @returns success or failure
+     */
+    async registerDoctor(doctorDTO: DoctorDTO): Promise<string> {
+        try {
+            const response: Doctor = await this.doctorRepo.save(doctorDTO)
+            if (response) {
+                const message: string = `Doctor registered successfully with id : ${response.id}`;
+                this.logger.log(message);
+                return message
+            } else {
+                const msg: string = 'doctor Failed to register'
+                this.logger.error(msg);
+                throw new InternalServerErrorException(msg);
+            }
+        } catch (error) {
+            this.logger.error(error.message);
             throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

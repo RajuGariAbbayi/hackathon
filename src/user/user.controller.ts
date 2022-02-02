@@ -4,6 +4,7 @@ import { ApiBearerAuth, ApiConflictResponse, ApiInternalServerErrorResponse, Api
 import { LoginDTO } from './login.dto';
 import { USER_CONFLICT, USER_FAILED_LOGIN, USER_LOGIN, USER_NOT_FOUND, USER_REGISTER } from '../../constant';
 import { UserDTO } from '../user/user dto/user.dto';
+import { DoctorDTO } from './doctor dto/doctor.dto';
 
 /**
  * User Controller
@@ -32,6 +33,13 @@ export class UserController {
     @ApiConflictResponse({ description: USER_CONFLICT, status: HttpStatus.CONFLICT })
     register(@Body() userDTO: UserDTO): Promise<string> {
         return this.userService.register(userDTO);
+    }
+
+    @Post('/doctor')
+    @ApiOkResponse({ description: 'Doctor reigstered successful', status: HttpStatus.OK, })
+    @ApiConflictResponse({ description: 'Doctor already exists', status: HttpStatus.CONFLICT })
+    registerDoctor(@Body() doctorDTO: DoctorDTO): Promise<string> {
+        return this.userService.registerDoctor(doctorDTO);
     }
 
     /**

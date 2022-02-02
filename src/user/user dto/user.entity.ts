@@ -76,10 +76,10 @@ export class User {
      */
     @Column({ type: 'enum', enum: Role, default: Role.User })
     role: Role;
-    
+
     /**
      * one to one relation
      */
-    @OneToOne(()=>Doctor,doctor=>doctor.user)
-    doctor:Doctor;
+    @OneToOne(() => Doctor, doctor => doctor.user, { cascade:true, onDelete:'CASCADE' })
+    doctor: Doctor;
 }
