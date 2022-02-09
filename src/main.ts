@@ -5,29 +5,34 @@ import { AppModule } from './app.module';
 import { ExceptionExceptionFilter } from './common/exception-filter/exception-filter.filter';
 import { ResponseInterceptor } from './common/interceptor/response.interceptor';
 
+/**
+ * bootstarp of application
+ */
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalFilters(new ExceptionExceptionFilter());
+  app.useGlobalFilters(new ExceptionExceptionFilter())
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true
-    }),
-  );
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true
+  }));
 
   app.useGlobalInterceptors(new ResponseInterceptor());
 
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('Doctor Appoinment Booking-API')
-    .setDescription('Doctor Appoinment Booking APIs` documentation')
+  /**
+   * documentation for API - swagger config
+   */
+  let swaggerConfig = new DocumentBuilder()
+    .setTitle('hackathon-api')
+    .setDescription('Doctor appoinment api documentation')
     .setVersion('1.0')
-    .setContact('Surya', '', 'suryakumarraju.epuri@hcl.com')
-    .addBearerAuth({ type: 'http', bearerFormat: 'JWT', scheme: 'bearer', name: 'header', in: 'header' }, 'Swagger-authorization')
-    .build();
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('appoinment', app, document);
+    .setContact('surya', '', 'suryakumarraju.epuri@hcl.com')
+    .addBearerAuth({ type: 'http', bearerFormat: 'JWT', scheme: 'bearer', name: 'header', in: 'header' }, 'swagger-auth')
+    .build()
 
+  let document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('hackathon', app, document)
   await app.listen(3000);
 }
 bootstrap();

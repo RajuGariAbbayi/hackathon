@@ -32,6 +32,7 @@
     "@types/passport-jwt": "^3.0.6",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
+    "cache-manager": "^3.6.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "fastify-swagger": "^4.13.1",
@@ -81,7 +82,14 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.(t|j)s",      
+      "!**/*.entity.(t|j)s",
+      "!**/*.dto.(t|j)s",
+      "!**/*.module.(t|j)s",
+      "!**/*.interceptor.(t|j)s",
+      "!**/*.filter.(t|j)s",
+      "!**/*.strategy.(t|j)s",
+      "!**/*.main.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"

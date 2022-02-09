@@ -1,27 +1,38 @@
-import { ArgumentsHost, Catch, ExceptionFilter } from "@nestjs/common";
-import { Request, Response} from 'express';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from "@nestjs/common";
+import { Request, Response } from 'express';
+import { ReadableStreamBYOBReader } from "stream/web";
+
 /**
- * used to handle all unhandled exception
+ * Used to handled all the exceptions
  */
 @Catch()
-export class ExceptionExceptionFilter implements ExceptionFilter{
-    /**
-     * we create our own Exception hierarchy
-     * @param exception displays exception output
-     * @param host ArgumentHost is used to get desired req and res
-     * @returns if error occurs returns the statuscode,message,url along with IST
-     */
-    catch(exception: any, host: ArgumentsHost) {
-        let ctx = host.switchToHttp();
-        let request = ctx.getRequest<Request>();
-        let response = ctx.getResponse<Response>();
-        let status = exception.getStatus();
-        return response.status(status).json({
-            statusCode:status,
-            data:null,
-            message:exception?.response,
-            url: request.url,
-            time: new Date().toISOString()
-        })
-    }
+export class ExceptionExceptionFilter implements ExceptionFilter {
+
+  /**
+   * Exception Filter
+   * @param exception 
+   * @param host 
+   * @returns statusCode,url,time
+   */
+  catch(exception: any, host: ArgumentsHost) {
+    let cxt = host.switchToHttp();
+    let request = cxt.getRequest<Request>()
+    let response = cxt.getResponse<Response>();
+    let status = exception.getStatus();
+    
+    return response.status(status).json({
+      statusCode: status,
+      data: null,
+      message: exception?.response,
+      url: request.url,
+      time: new Date().toISOString()
+    });
+
+
+
+  }
 }
+ 
+ 
+ 
+  
